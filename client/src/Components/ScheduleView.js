@@ -87,9 +87,39 @@ useEffect(() => {
   const getDay = (date) => new Date(date).toLocaleString("default", { weekday: "long" });
   const getDate = (date) => new Date(date).getDate();
 
+  const getColorClass = (binColor) => {
+    switch (binColor.toLowerCase()) {
+      case "yellow":
+        return "warning";
+      case "blue":
+        return "primary";
+      case "green":
+        return "success";
+      case "black":
+        return "secondary";
+      default:
+        return "dark";
+    }
+  }
+
+  const getType = (binColor) => {
+    switch (binColor.toLowerCase()) {
+      case "yellow":
+        return "Yellow Box";
+      case "blue":
+        return "Blue Box";
+      case "green":
+        return "Green Bin";
+      case "black":
+        return "Garbage";
+      default:
+        return ""
+    }
+  }
+
   return (
     <Container className='mainContainer bg-body-tertiary'>
-      <Row xs={1} md={2} className="g-4">
+      <Row xs={1} md={4} className="g-4">
       {sortedDates.map((date, index) => (
         <Col key={index}>
           <Card>
@@ -98,13 +128,12 @@ useEffect(() => {
               {getDay(date)} {getDate(date)} {getMonth(date)}
               </Card.Title>
               {groupedData[date].map((binColor, idx) => (
-                <h2><Badge key={idx}>
-                {binColor}
+                <h2 ><Badge className="binPill" key={idx} bg={`${getColorClass(binColor)}`}>
+                {getType(binColor)}
               </Badge></h2>
-              
             ))}
             </Card.Body>
-          </Card>
+           </Card>
         </Col>
       ))}
       </Row>

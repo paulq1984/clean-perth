@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import {Container, Row, Col} from "react-bootstrap"
+import {Container, Tab, Tabs} from "react-bootstrap"
 
 import './App.css';
 import NavigationBar from './Components/NavigationBar';
@@ -14,12 +14,20 @@ function App() {
     <div>
       <NavigationBar/>
       <Container className='mainContainer bg-body-tertiary'>
-        <Row>
-          <Col>North</Col>
-          <Col>South</Col>
-        </Row>
+        <Tabs
+          defaultActiveKey="north"
+          id="schedule-tab"
+          className='mb-3'
+          fill
+        >
+          <Tab eventKey="north" title="North">
+          <ScheduleView/>
+          </Tab>
+          <Tab eventKey="south" title="South">
+          <ScheduleView/>
+          </Tab>
+        </Tabs>
        </Container>
-       <ScheduleView/>
     </div>
 
   );
