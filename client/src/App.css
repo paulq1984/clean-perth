@@ -4,6 +4,10 @@
   border-radius: 12px;
 }
 
+.scheduleRow {
+  margin-bottom: 10px;
+}
+
 .binPill {
   width: 100%;
   height: 40%;
