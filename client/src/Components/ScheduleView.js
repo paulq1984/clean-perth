@@ -1,13 +1,14 @@
 import React, { useMemo, useState } from "react";
+import { Container, Row, Col, Card, Badge, Modal } from "react-bootstrap";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  Container,
-  Row,
-  Col,
-  Card,
-  Badge,
-  Modal,
-  Button,
-} from "react-bootstrap";
+  faTrashCan,
+  faBoxOpen,
+  faCarrot,
+  faBottleWater,
+  faCalendarWeek,
+} from "@fortawesome/free-solid-svg-icons";
 
 const binDetails = [
   {
@@ -114,6 +115,19 @@ const getType = (binColor) => {
   }
 };
 
+const getTypeIcon = (binColor) => {
+  switch (binColor.toLowerCase()) {
+    case "yellow":
+      return <FontAwesomeIcon icon={faBottleWater} />;
+    case "blue":
+      return <FontAwesomeIcon icon={faBoxOpen} />;
+    case "green":
+      return <FontAwesomeIcon icon={faCarrot} />;
+    default:
+      return <FontAwesomeIcon icon={faTrashCan} />;
+  }
+};
+
 const ScheduleView = ({ scheduleData = {} }) => {
   const [showModal, setShowModal] = useState(false);
   const [selectedBin, setSelectedBin] = useState(null);
@@ -158,23 +172,28 @@ const ScheduleView = ({ scheduleData = {} }) => {
 
   return (
     <Container className='mainContainer bg-body-tertiary'>
-      <h2>Waste Collection Schedule</h2>
-      {/* {scheduleData.name && <h3>Zone: {scheduleData.name}</h3>} */}
       {weeklySchedule.map(([weekStart, dates], weekIndex) => (
         <Row xs={1} md={2} className='g-4 scheduleRow' key={weekStart}>
           {dates.map((date, index) => (
             <Col key={`${weekStart}-${index}`}>
               <Card>
+                <Card.Header>
+                  <span className='typeIcon'>
+                    <FontAwesomeIcon icon={faCalendarWeek} />
+                  </span>
+                  {getDay(date)} {getDate(date)} {getMonth(date)}
+                </Card.Header>
                 <Card.Body>
-                  <Card.Title>
-                    {getDay(date)} {getDate(date)} {getMonth(date)}
-                  </Card.Title>
                   {groupedData[date]?.map((binColor, idx) => (
                     <h2 key={`${date}-${idx}`}>
                       <Badge
                         className='binPill'
                         bg={`${getColorClass(binColor)}`}
                         onClick={() => handleShowModal(binColor)}>
+                        <span className='typeIcon'>
+                          {getTypeIcon(binColor)}
+                        </span>
+
                         {getType(binColor)}
                       </Badge>
                     </h2>
@@ -194,7 +213,9 @@ const ScheduleView = ({ scheduleData = {} }) => {
         <Modal.Body>
           {selectedBin ? (
             <>
-              <h5>{getType(selectedBin)} Contents</h5>
+              <h5>
+                {getTypeIcon(selectedBin)} {getType(selectedBin)} Contents
+              </h5>
               <p>{getBinDetails(selectedBin)}</p>
             </>
           ) : (
