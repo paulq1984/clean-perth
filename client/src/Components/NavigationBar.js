@@ -12,9 +12,9 @@ function NavigationBar() {
   return (
     <>
       {/* NAVBAR */}
-      <Navbar collapseOnSelect expand='lg' className='bg-body-tertiary'>
+      <Navbar collapseOnSelect expand='lg' className='bg-secondary bg-gradient'>
         <Container>
-          <Navbar.Brand href='#home'>Clean Perth</Navbar.Brand>
+          <Navbar.Brand>Clean Perth</Navbar.Brand>
           <Navbar.Toggle aria-controls='responsive-navbar-nav' />
           <Navbar.Collapse
             id='responsive-navbar-nav'

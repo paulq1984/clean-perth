@@ -88,13 +88,13 @@ const getDate = (date) => new Date(date).getDate();
 const getColorClass = (binColor) => {
   switch (binColor.toLowerCase()) {
     case "yellow":
-      return "warning";
+      return " bg-warning bg-gradient text-dark";
     case "blue":
-      return "primary";
+      return " bg-primary bg-gradient";
     case "green":
-      return "success";
+      return " bg-success bg-gradient";
     case "black":
-      return "secondary";
+      return " bg-secondary bg-gradient";
     default:
       return "dark";
   }
@@ -171,33 +171,37 @@ const ScheduleView = ({ scheduleData = {} }) => {
   };
 
   return (
-    <Container className='mainContainer bg-body-tertiary'>
+    <Container className='mainContainer'>
       {weeklySchedule.map(([weekStart, dates], weekIndex) => (
         <Row xs={1} md={2} className='g-4 scheduleRow' key={weekStart}>
           {dates.map((date, index) => (
             <Col key={`${weekStart}-${index}`}>
               <Card>
-                <Card.Header>
+                <Card.Header as='h5'>
                   <span className='typeIcon'>
                     <FontAwesomeIcon icon={faCalendarWeek} />
                   </span>
                   {getDay(date)} {getDate(date)} {getMonth(date)}
                 </Card.Header>
                 <Card.Body>
-                  {groupedData[date]?.map((binColor, idx) => (
-                    <h2 key={`${date}-${idx}`}>
-                      <Badge
-                        className='binPill'
-                        bg={`${getColorClass(binColor)}`}
-                        onClick={() => handleShowModal(binColor)}>
-                        <span className='typeIcon'>
-                          {getTypeIcon(binColor)}
-                        </span>
+                  <Row xs={1} md={2} className='g-4'>
+                    {groupedData[date]?.map((binColor, idx) => (
+                      <Col key={idx}>
+                        <h2 key={`${date}-${idx}`}>
+                          <Badge
+                            className='binPill'
+                            bg={`${getColorClass(binColor)}`}
+                            onClick={() => handleShowModal(binColor)}>
+                            <span className='typeIcon'>
+                              {getTypeIcon(binColor)}
+                            </span>
 
-                        {getType(binColor)}
-                      </Badge>
-                    </h2>
-                  ))}
+                            {getType(binColor)}
+                          </Badge>
+                        </h2>
+                      </Col>
+                    ))}
+                  </Row>
                 </Card.Body>
               </Card>
             </Col>
