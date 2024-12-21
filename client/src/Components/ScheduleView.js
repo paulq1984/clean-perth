@@ -1,5 +1,57 @@
-import React, { useMemo } from "react";
-import { Container, Row, Col, Card, Badge } from "react-bootstrap";
+import React, { useMemo, useState } from "react";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  Badge,
+  Modal,
+  Button,
+} from "react-bootstrap";
+
+const binDetails = [
+  {
+    binColor: "Green",
+    contents: [
+      "Any type of food waste – meat, bones, dairy, vegetables, fruits, breads, nuts, sauces, egg shells, expired foods, etc.",
+      "Soiled paper products – paper towels, tissues, pizza boxes, coffee filters, tea bags",
+      "Wood - toothpicks, popsicle sticks, skewers, sawdust, etc.",
+      "Greenery - household plants",
+      "Pet waste and cat litter (must be in a paperbag or wrapped newspaper)",
+      "Floor sweepings",
+      "Hair (human and pet)",
+      "Dryer lint",
+      "Ashes",
+    ],
+  },
+  {
+    binColor: "Yellow",
+    contents: [
+      "Plastics - #1, #2, #5 and #6 (excluding #6 polystyrene)",
+      "Food and berage jars (clean)",
+      "Aluminum pop cans (clean)",
+      "Steel food cans (clean)",
+      "Aluminum foil and trays (clean and empty)",
+      "Gable top and tetra pak cartons - includes milk and juice cartons, drinking boxes and spiral bound containers",
+    ],
+  },
+  {
+    binColor: "Blue",
+    contents: [
+      "Paper - newspapers, magazines and telephone books",
+      "Boxboard - ceral and other food boxes, tissues boxes, etc.",
+      "Paper towel and toilet paper rolls",
+      "Cardboard (flattened and bundled)",
+      "Pizza boxes (clean)",
+      "Books (remove covers first)",
+      "Shredded paper accepted in clear plastic bags",
+    ],
+  },
+  {
+    binColor: "Garbage",
+    contents: ["All other refuse"],
+  },
+];
 
 const groupDatesByCalendarWeek = (dates) => {
   const groupedWeeks = {};
@@ -63,6 +115,9 @@ const getType = (binColor) => {
 };
 
 const ScheduleView = ({ scheduleData = {} }) => {
+  const [showModal, setShowModal] = useState(false);
+  const [selectedBin, setSelectedBin] = useState(null);
+
   const groupedData = useMemo(() => {
     const result = {};
     (scheduleData?.collectionSchedule || []).forEach((item) => {
@@ -86,12 +141,27 @@ const ScheduleView = ({ scheduleData = {} }) => {
     [sortedDates]
   );
 
+  const handleShowModal = (binColor) => {
+    setSelectedBin(binColor);
+    setShowModal(true);
+  };
+
+  const handleCloseModel = () => {
+    setShowModal(false);
+    setSelectedBin(null);
+  };
+
+  const getBinDetails = (binColor) => {
+    const bin = binDetails.find((item) => item.binColor === binColor);
+    return bin ? bin.contents : "Contents not available.";
+  };
+
   return (
-    <Container className="mainContainer bg-body-tertiary">
+    <Container className='mainContainer bg-body-tertiary'>
       <h2>Waste Collection Schedule</h2>
-      {scheduleData.name && <h3>Zone: {scheduleData.name}</h3>}
+      {/* {scheduleData.name && <h3>Zone: {scheduleData.name}</h3>} */}
       {weeklySchedule.map(([weekStart, dates], weekIndex) => (
-        <Row xs={1} md={2} className="g-4 scheduleRow" key={weekStart}>
+        <Row xs={1} md={2} className='g-4 scheduleRow' key={weekStart}>
           {dates.map((date, index) => (
             <Col key={`${weekStart}-${index}`}>
               <Card>
@@ -102,9 +172,9 @@ const ScheduleView = ({ scheduleData = {} }) => {
                   {groupedData[date]?.map((binColor, idx) => (
                     <h2 key={`${date}-${idx}`}>
                       <Badge
-                        className="binPill"
+                        className='binPill'
                         bg={`${getColorClass(binColor)}`}
-                      >
+                        onClick={() => handleShowModal(binColor)}>
                         {getType(binColor)}
                       </Badge>
                     </h2>
@@ -115,6 +185,23 @@ const ScheduleView = ({ scheduleData = {} }) => {
           ))}
         </Row>
       ))}
+
+      {/* Model */}
+      <Modal show={showModal} onHide={handleCloseModel}>
+        <Modal.Header closeButton>
+          <Modal.Title>Bin Details</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {selectedBin ? (
+            <>
+              <h5>{getType(selectedBin)} Contents</h5>
+              <p>{getBinDetails(selectedBin)}</p>
+            </>
+          ) : (
+            <p>No details available.</p>
+          )}
+        </Modal.Body>
+      </Modal>
     </Container>
   );
 };

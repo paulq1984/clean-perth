@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react';
-
 import {Container, Tab, Tabs, Spinner} from "react-bootstrap"
-
 import './App.css';
 import NavigationBar from './Components/NavigationBar';
 import ScheduleView from './Components/ScheduleView';
 import  axios  from 'axios';
-
 
 function App() {
   const [activeKey, setActiveKey] = useState('north');
