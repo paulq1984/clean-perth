@@ -177,7 +177,7 @@ const ScheduleView = ({ scheduleData = {} }) => {
           {dates.map((date, index) => (
             <Col key={`${weekStart}-${index}`}>
               <Card>
-                <Card.Header as='h5'>
+                <Card.Header as='h5' className='text-center'>
                   <span className='typeIcon'>
                     <FontAwesomeIcon icon={faCalendarWeek} />
                   </span>

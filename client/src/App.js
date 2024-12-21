@@ -45,7 +45,7 @@ function App() {
   return (
     <div>
       <NavigationBar />
-      <Container className='mainContainer bg-body-tertiary'>
+      <Container className='mainContainer bg-light border border-dark'>
         {isLoading ? (
           <Spinner animation='border' role='status'>
             <span className='visually-hidden'>Loading...</span>

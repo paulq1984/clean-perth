@@ -12,7 +12,7 @@ function NavigationBar() {
   return (
     <>
       {/* NAVBAR */}
-      <Navbar collapseOnSelect expand='lg' className='bg-secondary bg-gradient'>
+      <Navbar collapseOnSelect expand='lg' bg='dark' data-bs-theme='dark'>
         <Container>
           <Navbar.Brand>Clean Perth</Navbar.Brand>
           <Navbar.Toggle aria-controls='responsive-navbar-nav' />
@@ -20,7 +20,9 @@ function NavigationBar() {
             id='responsive-navbar-nav'
             className='justify-content-end'>
             <Nav>
-              <Button onClick={handleShow}>Landfill Information</Button>
+              <Button variant='outline-success' onClick={handleShow}>
+                Landfill Information
+              </Button>
             </Nav>
           </Navbar.Collapse>
         </Container>
